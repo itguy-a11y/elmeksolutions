@@ -2,15 +2,13 @@
    A slow-breathing wave grid of points in the brand's steel blue: reads as
    a technical mesh / flowing system, fitting an MEP consultancy. Renders
    only while the hero is on screen, follows the pointer with a gentle
-   camera parallax, and renders a single static frame when the visitor
-   prefers reduced motion. */
+   camera parallax. */
 (function () {
   "use strict";
 
   var canvas = document.getElementById("webgl");
   if (!canvas || !window.THREE) return;
 
-  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   var hero = document.getElementById("hero");
 
   var renderer;
@@ -75,12 +73,10 @@
   /* ---- pointer parallax ---- */
   var targetX = 0;
   var targetY = 0;
-  if (!reduceMotion) {
-    window.addEventListener("pointermove", function (e) {
-      targetX = (e.clientX / window.innerWidth - 0.5) * 1.4;
-      targetY = (e.clientY / window.innerHeight - 0.5) * 0.7;
-    }, { passive: true });
-  }
+  window.addEventListener("pointermove", function (e) {
+    targetX = (e.clientX / window.innerWidth - 0.5) * 1.4;
+    targetY = (e.clientY / window.innerHeight - 0.5) * 0.7;
+  }, { passive: true });
 
   /* ---- wave animation ---- */
   var pos = geometry.attributes.position.array;
@@ -107,13 +103,6 @@
     camera.position.y += (3.4 - targetY - camera.position.y) * 0.045;
     camera.lookAt(0, 0, 0);
     renderer.render(scene, camera);
-  }
-
-  if (reduceMotion) {
-    /* one static frame; no loop */
-    updateWave(1.7);
-    renderer.render(scene, camera);
-    return;
   }
 
   /* ---- run only while hero is visible ---- */
