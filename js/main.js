@@ -29,14 +29,12 @@
   function onScroll() {
     var y = window.scrollY;
     header.classList.toggle("is-scrolled", y > 40);
-    if (!reduceMotion) {
-      if (y > lastY + 6 && y > 260 && !headerHidden) {
-        headerHidden = true;
-        header.classList.add("is-hidden");
-      } else if ((y < lastY - 6 || y < 260) && headerHidden) {
-        headerHidden = false;
-        header.classList.remove("is-hidden");
-      }
+    if (y > lastY + 6 && y > 260 && !headerHidden) {
+      headerHidden = true;
+      header.classList.add("is-hidden");
+    } else if ((y < lastY - 6 || y < 260) && headerHidden) {
+      headerHidden = false;
+      header.classList.remove("is-hidden");
     }
     lastY = y;
   }
@@ -55,7 +53,7 @@
   toggle.addEventListener("click", function () {
     var isOpen = mobileNav.classList.toggle("is-open");
     toggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
-    if (isOpen && hasGsap && !reduceMotion) {
+    if (isOpen && hasGsap) {
       gsap.fromTo(mobileLinks,
         { autoAlpha: 0, y: 34 },
         { autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.06, ease: "power3.out", delay: 0.1, overwrite: true });
@@ -110,7 +108,7 @@
      ============================================================ */
   var preloader = q("#preloader");
 
-  if (!hasGsap || reduceMotion) {
+  if (!hasGsap) {
     if (preloader) preloader.style.display = "none";
     return;
   }
